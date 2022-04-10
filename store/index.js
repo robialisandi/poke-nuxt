@@ -1,7 +1,7 @@
 export const state = () => {
   return {
     pokemonsList: [],
-    loaded: true,
+    loaded: false,
 
     index: 1,
     endpoint: 20,
@@ -28,7 +28,7 @@ export const actions = {
   fetchList({ commit, state }) {
     const pokemonPromises = [];
 
-    commit('CHANGE_LOADED', false);
+    commit('CHANGE_LOADED', true);
     for (let i = state.index; i <= state.endpoint; i++) {
       pokemonPromises.push(
         this.$axios.get(`pokemon/${i}`).then(response => response.data)
@@ -37,9 +37,9 @@ export const actions = {
 
     Promise.all(pokemonPromises).then(pokemons => {
       commit('SET_LIST', pokemons);
+      commit('CHANGE_LOADED', false);
     });
 
     commit('SET_INDEX_ENDPOINT_VALUES');
-    commit('CHANGE_LOADED', true);
   },
 };

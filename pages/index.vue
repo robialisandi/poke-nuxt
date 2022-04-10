@@ -15,7 +15,7 @@
         />
       </div>
     </div>
-    <div class="text-center">
+    <div class="text-center pb-20">
       <Spinner v-if="loaded" class="mx-auto mb-3" />
     </div>
   </div>
@@ -54,7 +54,8 @@
           let bottomOfWindow =
             document.documentElement.scrollTop + window.innerHeight ===
             document.documentElement.offsetHeight;
-          if (bottomOfWindow && this.loaded) {
+          if (bottomOfWindow) {
+            this.$store.commit('CHANGE_LOADED', true);
             this.fetchList();
           }
         };
