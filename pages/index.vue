@@ -1,9 +1,67 @@
 <template>
-  <Tutorial />
+  <div class="w-full">
+    <div class="flex my-3 flex-wrap justify-center">
+      <div v-for="(pokemon, i) in pokemons" :key="i">
+        <Card
+          :pokemon="pokemon.name"
+          :typeOne="pokemon.types[0].type.name"
+          :typeTwo="
+            pokemon.types[1] !== undefined
+              ? pokemon.types[1].type.name
+              : pokemon.types[0].type.name
+          "
+          :imgUrl="pokemon.sprites.other['official-artwork'].front_default"
+          :id="pokemon.id"
+        />
+      </div>
+    </div>
+    <div class="text-center">
+      <Spinner v-if="true" class="mx-auto mb-3" />
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-  name: 'IndexPage',
-}
+  import { mapGetters, mapActions } from 'vuex';
+  export default {
+    name: 'IndexPage',
+    async asyncData({ store }) {
+      try {
+        await store.dispatch('fetchList');
+      } catch (err) {
+        if (err.response !== undefined) {
+          return error({
+            statusCode: err.response.status,
+            message: err.response.statusText,
+          });
+        } else {
+          error({ statusCode: 503, message: 'We have a problem.' });
+        }
+      }
+    },
+    head() {
+      return {
+        title: 'Nuxt pokedex',
+      };
+    },
+    computed: {
+      ...mapGetters(['pokemons', 'loaded']),
+    },
+    methods: {
+      loadMorePokemons() {
+        window.onscroll = () => {
+          let bottomOfWindow =
+            document.documentElement.scrollTop + window.innerHeight ===
+            document.documentElement.offsetHeight;
+          if (bottomOfWindow && this.loaded) {
+            this.fetchList();
+          }
+        };
+      },
+      ...mapActions(['fetchList']),
+    },
+    mounted() {
+      this.loadMorePokemons();
+    },
+  };
 </script>
