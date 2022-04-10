@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="flex my-3 flex-wrap justify-center">
       <div v-for="(pokemon, i) in pokemons" :key="i">
-        <Card
+        <LazyCard
           :pokemon="pokemon.name"
           :typeOne="pokemon.types[0].type.name"
           :typeTwo="
@@ -25,6 +25,7 @@
   import { mapGetters, mapActions } from 'vuex';
   export default {
     name: 'IndexPage',
+    scrollToTop: true,
     async asyncData({ store }) {
       try {
         await store.dispatch('fetchList');
