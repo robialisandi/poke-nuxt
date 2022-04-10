@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="text-center">
-      <Spinner v-if="true" class="mx-auto mb-3" />
+      <Spinner v-if="loaded" class="mx-auto mb-3" />
     </div>
   </div>
 </template>
