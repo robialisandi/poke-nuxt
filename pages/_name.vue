@@ -20,14 +20,11 @@
         const dataActual = getActual.data;
         const dataSpecies = getSpecies.data;
 
-        const prev =
-          dataActual.id === 1
-            ? $axios.$get(`pokemon/898`)
-            : await $axios.$get(`pokemon/${dataActual.id - 1}`);
-        const next =
-          dataActual.id === 898
-            ? await $axios.$get(`pokemon/1`)
-            : await $axios.$get(`pokemon/${dataActual.id + 1}`);
+        const idPrev = dataActual.id === 1 ? 898 : dataActual.id - 1;
+        const idNext = dataActual.id === 898 ? 1 : dataActual.id + 1;
+
+        const prev = await $axios.$get(`pokemon/${idPrev}`);
+        const next = await $axios.$get(`pokemon/${idNext}`);
 
         return { actual: dataActual, species: dataSpecies, prev, next };
       } catch (err) {
