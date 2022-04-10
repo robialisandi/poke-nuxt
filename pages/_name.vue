@@ -44,6 +44,15 @@
     head() {
       return {
         title: `${this.capitalize(this.$route.params.name)} | Nuxt pokedex`,
+        meta: [
+          {
+            hid: 'description',
+            name: 'description',
+            content: `${this.capitalize(
+              this.$route.params.name
+            )} Pokemon character`,
+          },
+        ],
       };
     },
     methods: {
